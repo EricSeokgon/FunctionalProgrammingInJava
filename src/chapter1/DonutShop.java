@@ -1,7 +1,7 @@
 package chapter1;
 
 public class DonutShop {
-    public static Donut buyDount(CreditCard creditCard) {
+    public static Tuple<Donut, Payment> buyDount(CreditCard creditCard) {
         Donut dount = new Donut();
         creditCard.charge(Donut.price);
         return dount;
