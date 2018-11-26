@@ -1,9 +1,13 @@
 package chapter1;
 
+import java.util.List;
+
 public class DonutShop {
     public static Tuple<Donut, Payment> buyDount(CreditCard creditCard) {
-        Donut dount = new Donut();
-        Payment payment = new Payment(creditCard, (Integer) Donut.price);
-        return new Tuple<>(dount, payment);
+        return new Tuple<>(new Donut(), new Payment(cCard, Donut.price));
+    }
+
+    public static Tuple<List<Donut>, Payment> buyDonuts(final int quantity, final CreditCard creditCard) {
+        return new Tuple<fill(quantity, ()->new Donut()),new Payment(cCard, Donut.price * quantity);
     }
 }
