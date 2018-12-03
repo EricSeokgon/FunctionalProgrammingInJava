@@ -25,9 +25,4 @@ public class EmailValidation {
             mcase(() -> !emailPattern.matcher(s).matches(), () ->
                     failure("email " + s + " is invalid."))
     );
-
-
-
-
-
 }
