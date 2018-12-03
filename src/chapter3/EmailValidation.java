@@ -5,43 +5,29 @@ import chapter2.Function;
 import java.util.regex.Pattern;
 
 public class EmailValidation {
-    static Pattern emailPattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
-
-    static Function<String, Result> emailChecker = s -> {
-        if (s == null) {
-            return new Result.Failure("email must not be null");
-        } else if (s.length() == 0) {
-            return new Result.Failure("email must not be empty");
-        } else if (emailPattern.matcher(s).matches()) {
-            return new Result.Success();
-        } else {
-            return new Result.Failure("email " + s + " is invaild.");
-        }
-    };
-
+    static Pattern emailPattern =
+            Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
+    static Effect<String> success = s ->
+            System.out.println("Mail sent to " + s);
+    static Effect<String> failure = s ->
+            System.err.println("Error message logged: " + s);
     public static void main(String... args) {
-        validate("this.is@my.email");
-        validate(null);
-        validate("");
-        validate("john.doe@acme.com");
+        emailChecker.apply("this.is@my.email").bind(success, failure);
+        emailChecker.apply(null).bind(success, failure);
+        emailChecker.apply("").bind(success, failure);
+        emailChecker.apply("john.doe@acme.com").bind(success, failure);
     }
+    static Function<String, Result<String>> emailChecker = s -> match(
+            mcase(() -> success(s)),
+            mcase(() -> s == null, () -> failure("email must not be null")),
+            mcase(() -> s.length() == 0, () ->
+                    failure("email must not be empty")),
+            mcase(() -> !emailPattern.matcher(s).matches(), () ->
+                    failure("email " + s + " is invalid."))
+    );
 
-    private static void logError(String s) {
-        System.err.println("Mail sent to  " + s);
-    }
 
-    private static void sendVerificationMail(String s) {
-        System.out.println("Mail sent to " + s);
-    }
 
-    static void validate(String s) {
-        Result result = emailChecker.apply(s);
-        if (result instanceof Result.Success) {
-            sendVerificationMail(s);
-        } else {
-            logError(((Result.Failure) result).getMessage());
-        }
-    }
 
 
 }
