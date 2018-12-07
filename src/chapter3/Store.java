@@ -1,6 +1,7 @@
 package chapter3;
 
 import java.util.List;
+import static chapter3.CollectionUtilities.*;
 
 public class Store {
     public static void main(String[] args) {
